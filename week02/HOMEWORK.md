@@ -1,8 +1,108 @@
 # Homework
 
-## 写一个正则表达式 匹配所有 Number 直接量
+## 写一个正则表达式，匹配所有 Number 直接量
+
+NumericLiteral ::
+
+- DecimalLiteral
+- BinaryIntegerLiteral
+- OctalIntegerLiteral
+- HexIntegerLiteral
+
+DecimalLiteral ::
+
+- DecimalIntegerLiteral . DecimalDigits(opt) ExponentPart(opt)
+- . DecimalDigits ExponentPart(opt)
+- DecimalIntegerLiteral ExponentPart(opt)
+
+DecimalIntegerLiteral ::
+
+- 0
+- NonZeroDigit DecimalDigits(opt)
+
+DecimalDigits ::
+
+- DecimalDigit
+- DecimalDigits DecimalDigit
+
+DecimalDigit :: one of
+
+- 0123456789
+
+NonZeroDigit :: one of
+
+- 123456789
+
+ExponentPart ::
+
+- ExponentIndicator SignedInteger
+
+ExponentIndicator :: one of
+
+- e E
+
+SignedInteger ::
+
+- DecimalDigits
+- - DecimalDigits
+- - DecimalDigits
+
+BinaryIntegerLiteral ::
+
+- 0b BinaryDigits
+- 0B BinaryDigits
 
 ```js
+/0[bB][01]+/;
+```
+
+BinaryDigits ::
+
+- BinaryDigit
+- BinaryDigits BinaryDigit
+
+BinaryDigit :: one of
+
+- 0 1
+
+OctalIntegerLiteral ::
+
+- 0o OctalDigits
+- 0O OctalDigits
+
+```js
+/0[oO][0-7]+/;
+```
+
+OctalDigits ::
+
+- OctalDigit
+- OctalDigits OctalDigit
+
+OctalDigit :: one of
+
+- 01234567
+
+HexIntegerLiteral ::
+
+- 0x HexDigits
+- 0X HexDigits
+
+```js
+/0[xX][0-9a-fA-F]+/;
+```
+
+HexDigits ::
+
+- HexDigit
+- HexDigits HexDigit
+
+HexDigit :: one of
+
+- 0123456789abcdefABCDEF
+
+```js
+var reg = /0[bB][01]+|0[oO][0-7]+|0[xX][0-9a-fA-F]+|([-\+]?)(0|[1-9]([0-9]+)?)\.([0-9]+)?([eE][+-]?[0-9]+)?|([-\+]?)\.[0-9]+([eE][+-]?[0-9]+)?|([-\+]?)(0|[1-9]([0-9]*)?)([eE][+-]?[0-9]+)?/g;
 ```
 
 ## 写一个 UTF-8 Encoding 的函数
@@ -84,5 +184,79 @@ console.log(encodeUTF8("1")); // {binary: "10110001", hex: "b1"}
 
 ## 写一个正则表达式，匹配所有的字符串直接量，单引号和双引号
 
+StringLiteral ::
+
+- " DoubleStringCharacters(opt) "
+- ' SingleStringCharacters(opt) '
+
+DoubleStringCharacters ::
+
+- DoubleStringCharacter DoubleStringCharacters(opt)
+
+SingleStringCharacters ::
+
+- SingleStringCharacter SingleStringCharacters(opt)
+
+DoubleStringCharacter ::
+
+- SourceCharacter but not one of " or \ or LineTerminator
+- \<LS\>
+- \<PS\>
+- \ EscapeSequence
+- LineContinuation
+
+SingleStringCharacter ::
+
+- SourceCharacter but not one of ' or \ or LineTerminator
+- \<LS\>
+- \<PS\>
+- \ EscapeSequence
+- LineContinuation
+
+LineContinuation ::
+
+- \ LineTerminatorSequence
+
+EscapeSequence ::
+
+- CharacterEscapeSequence
+- 0 [lookahead ∉ DecimalDigit]
+- HexEscapeSequence
+- UnicodeEscapeSequence
+
+CharacterEscapeSequence ::
+
+- SingleEscapeCharacter
+- NonEscapeCharacter
+
+SingleEscapeCharacter :: one of
+
+- ' " \ b f n r t v
+
+NonEscapeCharacter ::
+
+- SourceCharacter but not one of EscapeCharacter or LineTerminator
+
+EscapeCharacter ::
+
+- SingleEscapeCharacter
+- DecimalDigit
+- x
+- u
+
+HexEscapeSequence ::
+
+- x HexDigit HexDigit
+
+UnicodeEscapeSequence ::
+
+- u Hex4Digits
+- u{ CodePoint }
+
+Hex4Digits ::
+
+- HexDigit HexDigit HexDigit HexDigit
+
 ```js
+var reg = //g
 ```
