@@ -45,4 +45,125 @@
 
 ## JavaScript 词法 类型
 
+### Unicode
+
+[https://home.unicode.org](https://home.unicode.org)
+[https://www.fileformat.info/info/unicode/](https://www.fileformat.info/info/unicode/)
+
+#### Block
+
+- 范围：U+0000 - U+10FFFF
+- Basic Latin：U+0000 - U+007F **编程不要使用 ascii 外字符**
+- BMP: Basic Multilingual Plane U+0000 - U+FFFF https://www.sttmedia.com/unicode-basiclingualplane
+- CJK: Chinese Japanese Korean U+4E00 - U+9FFF
+- \u 转义
+- ECMAScript 常用：
+
+```js
+Unicode Format-Control Characters
+
+U+200C ZERO WIDTH NON-JOINER <ZWNJ> IdentifierPart
+U+200D ZERO WIDTH JOINER <ZWJ> IdentifierPart
+U+FEFF ZERO WIDTH NO-BREAK SPACE <ZWNBSP> WhiteSpace
+
+White Space
+
+U+0009 CHARACTER TABULATION <TAB>
+U+000B LINE TABULATION <VT>
+U+000C FORM FEED (FF) <FF>
+U+0020 SPACE <SP>
+U+00A0 NO-BREAK SPACE <NBSP>
+U+FEFF ZERO WIDTH NO-BREAK SPACE <ZWNBSP>
+Other category "Zs" Any other Unicode "Space_Separator" code point <USP>
+
+Line Terminators
+
+U+000A LINE FEED (LF) <LF>
+U+000D CARRIAGE RETURN (CR) <CR>
+U+2028 LINE SEPARATOR <LS>
+U+2029 PARAGRAPH SEPARATOR <PS>
+```
+
+#### Categories
+
+```js
+Separate、Space
+
+U+0020	SPACE
+U+00A0	NO-BREAK SPACE
+U+1680	OGHAM SPACE MARK
+U+2000	EN QUAD
+U+2001	EM QUAD
+U+2002	EN SPACE
+U+2003	EM SPACE
+U+2004	THREE-PER-EM SPACE
+U+2005	FOUR-PER-EM SPACE
+U+2006	SIX-PER-EM SPACE
+U+2007	FIGURE SPACE
+U+2008	PUNCTUATION SPACE
+U+2009	THIN SPACE
+U+200A	HAIR SPACE
+U+202F	NARROW NO-BREAK SPACE
+U+205F	MEDIUM MATHEMATICAL SPACE
+U+3000	IDEOGRAPHIC SPACE
+```
+
+### InputElement
+
+#### WhiteSpace
+
+```js
+<TAB>
+<VT> 纵向制表符
+<FF> Form Feed
+<SP> 推荐使用
+<NBSP> 处理排版时，如果是普通的 <SP>，会在一行放不下时，将它左右断开；<NBSP> 它的左右不会断开
+<ZWNBSP>
+<USP>
+```
+
+#### LineTerminator
+
+```js
+<LF> Line Feed \n 换行 推荐使用
+<CR> Carriage Return \r 回车
+<LS>
+<PS>
+```
+
+#### Comment
+
+```js
+//
+/* */
+```
+
+#### Token
+
+1. Punctuator 标点符号： > < = }...
+2. IdentifierName：Identifier、Keywords、Future reserved Keywords
+3. Literal：Number、String、Boolean、Null、Undefined
+
+##### 1、Number
+
+- IEEE754 Double Float
+- 0.1 + 0.2 === 0.3 // false
+- Math.abs(0.1 + 0.2 - 0.3) < Number.EPSILON // true
+- 97 .toString(2)
+- Grammar：DecimalLiteral BinaryIntegerLiteral OctalIntegerLiteral HexIntegerLiteral
+
+#### 2、String
+
+- UCS: Universal Character Set 通用字符集 U+0000 - U+FFFF Unicode 的 BMP 范围
+- Character 字符
+- Code point 码点
+- Encoding UTF: Unicode Transformation Format 通用转换格式 UTF-8 UTF-16
+- Grammar："abc" 'abc' \`abc\`
+
 ## Summary
+
+- 通过 BNF 练习，学习`形式语言产生式`生成过程，了解到通用编程语言的基础，通一晓百，不仅为学习 ECMA-262 规范打下了基础，同时也为学习其他编程语言打下基础
+- 了解到编程语言的参考原则（图灵完备性）、分类（动静/类型系统）和基本构成元素（Atom、Express、Statement、Structure、Program）
+- Unicode 是计算机科学领域里的一项业界标准，包括字符集、编码方案等。它为每种语言中的每个字符设定了统一并且唯一的二进制编码，以满足跨语言、跨平台进行文本转换、处理的要求。了解到其目前定义的各段 Block 和 Categories 种类，日常编码的安全范围（兼容 ascii 段）及 ECMAScript 中常用编码
+- ECMAScript 中的主要 InputElement 部分：WhiteSpace、LineTerminator、Comment、Token，其中 Token 表示为有效的输入内容，包括 Punctuator、IdentifierName 和 Literal
+- 了解到 IEEE754 Double Float 精度不准确导致计算问题以及解决方案，UTF-8 是 Unicdoe 的一种实现，及 2 者之间转换原则。
