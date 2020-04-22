@@ -62,26 +62,26 @@
 ```js
 Unicode Format-Control Characters
 
-U+200C ZERO WIDTH NON-JOINER <ZWNJ> IdentifierPart
-U+200D ZERO WIDTH JOINER <ZWJ> IdentifierPart
-U+FEFF ZERO WIDTH NO-BREAK SPACE <ZWNBSP> WhiteSpace
+U+200C ZERO WIDTH NON-JOINER (ZWNJ) IdentifierPart
+U+200D ZERO WIDTH JOINER (ZWJ) IdentifierPart
+U+FEFF ZERO WIDTH NO-BREAK SPACE (ZWNBSP) WhiteSpace
 
 White Space
 
-U+0009 CHARACTER TABULATION <TAB>
-U+000B LINE TABULATION <VT>
-U+000C FORM FEED (FF) <FF>
-U+0020 SPACE <SP>
-U+00A0 NO-BREAK SPACE <NBSP>
-U+FEFF ZERO WIDTH NO-BREAK SPACE <ZWNBSP>
-Other category "Zs" Any other Unicode "Space_Separator" code point <USP>
+U+0009 CHARACTER TABULATION (TAB)
+U+000B LINE TABULATION (VT)
+U+000C FORM FEED (FF)
+U+0020 SPACE (SP)
+U+00A0 NO-BREAK SPACE (NBSP)
+U+FEFF ZERO WIDTH NO-BREAK SPACE (ZWNBSP)
+Other category "Zs" Any other Unicode "Space_Separator" code point (USP)
 
 Line Terminators
 
-U+000A LINE FEED (LF) <LF>
-U+000D CARRIAGE RETURN (CR) <CR>
-U+2028 LINE SEPARATOR <LS>
-U+2029 PARAGRAPH SEPARATOR <PS>
+U+000A LINE FEED (LF)
+U+000D CARRIAGE RETURN (CR)
+U+2028 LINE SEPARATOR (LS)
+U+2029 PARAGRAPH SEPARATOR (PS)
 ```
 
 #### Categories
@@ -157,7 +157,7 @@ U+3000	IDEOGRAPHIC SPACE
 - UCS: Universal Character Set 通用字符集 U+0000 - U+FFFF Unicode 的 BMP 范围
 - Character 字符
 - Code point 码点
-- Encoding UTF: Unicode Transformation Format 通用转换格式 UTF-8 UTF-16
+- Encoding UTF：Unicode Transformation Format 通用转换格式 UTF-8 UTF-16
 - Grammar："abc" 'abc' \`abc\`
 
 ## Summary
@@ -166,4 +166,4 @@ U+3000	IDEOGRAPHIC SPACE
 - 了解到编程语言的参考原则（图灵完备性）、分类（动静/类型系统）和基本构成元素（Atom、Express、Statement、Structure、Program）
 - Unicode 是计算机科学领域里的一项业界标准，包括字符集、编码方案等。它为每种语言中的每个字符设定了统一并且唯一的二进制编码，以满足跨语言、跨平台进行文本转换、处理的要求。了解到其目前定义的各段 Block 和 Categories 种类，日常编码的安全范围（兼容 ascii 段）及 ECMAScript 中常用编码
 - ECMAScript 中的主要 InputElement 部分：WhiteSpace、LineTerminator、Comment、Token，其中 Token 表示为有效的输入内容，包括 Punctuator、IdentifierName 和 Literal
-- 了解到 IEEE754 Double Float 精度不准确导致计算问题以及解决方案，UTF-8 是 Unicdoe 的一种实现，及 2 者之间转换原则。
+- 了解到 IEEE754 Double Float 精度不准确导致计算问题以及解决方案，UTF-8 是 Unicdoe 的一种实现，及 2 者之间转换规则
