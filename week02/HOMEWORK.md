@@ -2,6 +2,25 @@
 
 ## 写一个正则表达式，匹配所有 Number 直接量
 
+[https://regexr.com/533br](https://regexr.com/533br)
+
+```js
+/(-?([0-9]+)?)\.([0-9]+)?([eE][+-]?[0-9]+)?/ // 十进制，科学计数
+
+/0[bB][01]+/ // 二进制
+
+/0[oO][0-7]+/ // 八进制
+
+/0[xX][0-9a-fA-F]+/ // 十六进制
+
+/(-?\d+)\.\d+/ // 浮点数
+
+/-?\d+/ // 整数
+
+// 综合
+var reg = /(-?([0-9]+)?)\.([0-9]+)?([eE][+-]?[0-9]+)?|0[bB][01]+|0[oO][0-7]+|0[xX][0-9a-fA-F]+|(-?\d+)\.\d+|-?\d+/g
+```
+
 NumericLiteral ::
 
 - DecimalLiteral
@@ -52,10 +71,6 @@ BinaryIntegerLiteral ::
 - 0b BinaryDigits
 - 0B BinaryDigits
 
-```js
-/0[bB][01]+/;
-```
-
 BinaryDigits ::
 
 - BinaryDigit
@@ -69,10 +84,6 @@ OctalIntegerLiteral ::
 
 - 0o OctalDigits
 - 0O OctalDigits
-
-```js
-/0[oO][0-7]+/;
-```
 
 OctalDigits ::
 
@@ -88,10 +99,6 @@ HexIntegerLiteral ::
 - 0x HexDigits
 - 0X HexDigits
 
-```js
-/0[xX][0-9a-fA-F]+/;
-```
-
 HexDigits ::
 
 - HexDigit
@@ -101,16 +108,12 @@ HexDigit :: one of
 
 - 0123456789abcdefABCDEF
 
-```js
-var reg = /0[bB][01]+|0[oO][0-7]+|0[xX][0-9a-fA-F]+|([-\+]?)(0|[1-9]([0-9]+)?)\.([0-9]+)?([eE][+-]?[0-9]+)?|([-\+]?)\.[0-9]+([eE][+-]?[0-9]+)?|([-\+]?)(0|[1-9]([0-9]*)?)([eE][+-]?[0-9]+)?/g;
-```
-
 ## 写一个 UTF-8 Encoding 的函数
 
-```js
-// https://tools.ietf.org/html/rfc3629#page-4
-// http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html
+[https://tools.ietf.org/html/rfc3629#page-4](https://tools.ietf.org/html/rfc3629#page-4)
+[http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html](http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html)
 
+```js
 // 0000 0000-0000 007F | 0xxxxxxx 0-127
 // 0000 0080-0000 07FF | 110xxxxx 10xxxxxx 128-2047
 // 0000 0800-0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx 2048-65535
@@ -184,6 +187,28 @@ console.log(encodeUTF8("1")); // {binary: "10110001", hex: "b1"}
 
 ## 写一个正则表达式，匹配所有的字符串直接量，单引号和双引号
 
+[https://regexr.com/53425](https://regexr.com/53425)
+
+```js
+/**
+ * 不可以出现：
+ * <LF> U+000A LINE FEED (LF)
+ * <CR> U+000D CARRIAGE RETURN (CR)
+ *
+ * 可以出现：
+ * "
+ * '
+ * <LS> U+2028 LINE SEPARATOR
+ * <PS> U+2029 PARAGRAPH SEPARATOR
+ * [0-9]
+ * \['"\bfnrtv]
+ * \x[0-9a-fA-F]{2}
+ * \u[0-9a-fA-F]{4}
+ */
+
+var reg = /'(\\x[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})*'/g;
+```
+
 StringLiteral ::
 
 - " DoubleStringCharacters(opt) "
@@ -256,7 +281,3 @@ UnicodeEscapeSequence ::
 Hex4Digits ::
 
 - HexDigit HexDigit HexDigit HexDigit
-
-```js
-var reg = //g
-```
