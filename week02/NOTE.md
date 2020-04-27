@@ -13,10 +13,24 @@
 ### 形式语言产生式
 
 1. BNF
-   - 语法结构：基础结构称为终结符（引号和中间的字符），符合结构称为非终结符号（尖括号括起来的名称）
-   - 符号：() 括号，\* 多次，| 或，+ 至少一次
+   - 尖括号括起来的名称表示语法结构名
+   - 语法结构：基础结构称为终结符，复合结构称为非终结符
+   - 引号和中间的字符表示终结符
+   - 符号：() 括号，星号 多次，| 或，+ 至少一次
 2. EBNF
 3. ABNF
+
+### 现代语言的特例
+
+1. C++ 星号
+2. VB \<
+3. Python tab 空格
+4. JavaScript /
+
+### 语言分类
+
+1. 用途：数据描述、编程语言
+2. 表达方式：声明式、命令式
 
 ### 图灵完备性
 
@@ -144,26 +158,56 @@ U+3000	IDEOGRAPHIC SPACE
 2. IdentifierName：Identifier、Keywords、Future reserved Keywords
 3. Literal：Number、String、Boolean、Null、Undefined
 
-##### 1、Number
+##### 1、Punctuator
+
+标点符号 > < = } ...
+
+##### 2、IdentifierName
+
+- Identifier
+- Keywords: await async break
+- Future reserved Keywords: enum
+
+##### 3、Literal
+
+##### 3.1、Number
 
 - IEEE754 Double Float
-- 0.1 + 0.2 === 0.3 // false
-- Math.abs(0.1 + 0.2 - 0.3) < Number.EPSILON // true
-- 97 .toString(2)
-- Grammar：DecimalLiteral BinaryIntegerLiteral OctalIntegerLiteral HexIntegerLiteral
+- Grammar：`DecimalLiteral` `BinaryIntegerLiteral` `OctalIntegerLiteral` `HexIntegerLiteral`
+- Safe Integer: `Number.MAX_SAFE_INTEGER`
+- Float Compare: `0.1 + 0.2 === 0.3 // false` => `Math.abs(0.1 + 0.2 - 0.3) < Number.EPSILON // true`
+- `97.toString(2)` => `97 .toString(2)`
 
-#### 2、String
+##### 3.2、String
 
-- UCS: Universal Character Set 通用字符集 U+0000 - U+FFFF Unicode 的 BMP 范围
+- 字符集：ASCII、Unicode、UCS、GB、ISO-8859、BIG5
 - Character 字符
 - Code point 码点
 - Encoding UTF：Unicode Transformation Format 通用转换格式 UTF-8 UTF-16
 - Grammar："abc" 'abc' \`abc\`
 
+##### 3.3、Boolean、Null、Undefined
+
+```js
+void 0; // undefined
+
+function f() {
+  // undefined 函数内被重写
+  var undefined = 1;
+  console.log(undefined); // 1
+}
+
+function f() {
+  // null 不会被重写
+  var null = 0;
+  console.log(null); // null
+}
+```
+
 ## Summary
 
 - 通过 BNF 练习，学习`形式语言产生式`生成过程，了解到通用编程语言的基础，通一晓百，不仅为学习 ECMA-262 规范打下了基础，同时也为学习其他编程语言打下基础
-- 了解到编程语言的参考原则（图灵完备性）、分类（动静/类型系统）和基本构成元素（Atom、Express、Statement、Structure、Program）
+- 了解到现代编程语言的特例方式，语言的分类（用途/表达方式、动态/静态、类型系统），图灵完备性和语言的基本构成（Atom、Express、Statement、Structure、Program）
 - Unicode 是计算机科学领域里的一项业界标准，包括字符集、编码方案等。它为每种语言中的每个字符设定了统一并且唯一的二进制编码，以满足跨语言、跨平台进行文本转换、处理的要求。了解到其目前定义的各段 Block 和 Categories 种类，日常编码的安全范围（兼容 ascii 段）及 ECMAScript 中常用编码
 - ECMAScript 中的主要 InputElement 部分：WhiteSpace、LineTerminator、Comment、Token，其中 Token 表示为有效的输入内容，包括 Punctuator、IdentifierName 和 Literal
-- 了解到 IEEE754 Double Float 精度不准确导致计算问题以及解决方案，UTF-8 是 Unicdoe 的一种实现，及 2 者之间转换规则
+- 了解到 IEEE754 Double Float 精度不准确导致计算问题以及解决方案，UTF-8 是 Encoding 实现
