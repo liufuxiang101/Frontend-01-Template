@@ -1,4 +1,5 @@
 const net = require("net");
+const parser = require("./parser");
 
 class Response {}
 
@@ -266,5 +267,78 @@ void (async function () {
 
   let response = await request.send();
 
-  console.log(response);
+  // console.log(response.body);
+
+  let dom = parser.parseHTML(response.body);
+
+  console.log("css", JSON.stringify(dom, null, 4));
 })();
+
+// =============================================================================
+// const net = require("net");
+
+// const client = net.createConnection(
+//   {
+//     host: "127.0.0.1",
+//     port: 8088,
+//   },
+//   () => {
+//     // connect listener
+//     console.log("connected to server!");
+
+//     client.write(`
+// POST / HTTP/1.1\r
+// Content-Type: application/x-www-form-urlencoded\r
+// Content-Length: 11\r
+// \r
+// name=winter`);
+//   }
+// );
+
+// client.on("data", (data) => {
+//   console.log(data.toString());
+
+//   client.end();
+// });
+
+// client.on("end", () => {
+//   console.log("disconnected from server");
+// });
+
+// =============================================================================
+// const client = net.createConnection(
+//   {
+//     host: "127.0.0.1",
+//     port: 8088,
+//   },
+//   () => {
+//     // connect listener
+//     console.log("connected to server!");
+
+//     let request = new Request({
+//       method: "POST",
+//       host: "127.0.0.1",
+//       port: "8088",
+//       path: "/",
+//       headers: {
+//         ["X-Foo2"]: "customer",
+//       },
+//       body: {
+//         name: "winter",
+//       },
+//     });
+
+//     console.log(request.toString());
+//     client.write(request.toString());
+//   }
+// );
+
+// client.on("data", (data) => {
+//   console.log(data.toString());
+
+//   client.end();
+// });
+
+// client.on("end", () => {
+//   console.log("disconnected from server");
+// });
