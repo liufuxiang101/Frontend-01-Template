@@ -106,7 +106,7 @@ new Array(10000).fill(0);
 
 ### localStorage
 
-1. 当前源（ origin ），
+1. 当前源（ origin ）;
 2. `localStorage` 长期保留，`sessionStorage` 当前会话结束删除;
 3. 键值对总是以字符串的形式存储，数值类型会自动转化为字符串类型。
 
