@@ -106,7 +106,7 @@ new Array(10000).fill(0);
 
 ### localStorage
 
-1. 当前源（ origin ）；
+1. 当前源（origin）；
 2. `localStorage` 长期保留，`sessionStorage` 当前会话结束删除；
 3. 键值对总是以字符串的形式存储，数值类型会自动转化为字符串类型。
 
@@ -253,3 +253,81 @@ class BinaryHeap {
 ```
 
 ## 寻路问题（正则）
+
+### match
+
+```js
+> 'abc'.match(/a(b)c/); // 捕获
+
+0: "abc"
+1: "b"
+groups: undefined
+index: 0
+input: "abc"
+length: 2
+
+> 'abc'.match(/a(?:b)c/); // 非捕获
+
+0: "abc"
+groups: undefined
+index: 0
+input: "abc"
+length: 1
+
+> "[a=value]".match(/\[([^=]+)=([^\]]+)\]/);
+
+0: "[a=value]"
+1: "a"
+2: "value"
+groups: undefined
+index: 0
+input: "[a=value]"
+length: 3
+
+> "[a=value]".match(/\[(?:[^=]+)=(?:[^\]]+)\]/);
+
+0: "[a=value]"
+groups: undefined
+index: 0
+input: "[a=value]"
+length: 1
+```
+
+### replace
+
+```js
+"abc".replace(/a(b)c/, function (str, $1) {
+  console.log(str, $1);
+});
+
+// abc b
+// "undefined"
+
+"abc".replace(/a(b)c/, function (str, $1) {
+  console.log(str, $1);
+  return $1 + $1;
+});
+
+// abc b
+// "bb"
+
+"abc".replace(/a(b)c/, "$1$1");
+
+// "bb"
+
+"abc".replace(/a(b)c/, "$$1$$1");
+
+// "$1$1"
+```
+
+### exec lastIndex
+
+```js
+let lastIndex = 0;
+let token;
+
+do {
+  token = inputElement.exec(source);
+  console.log(token);
+} while (inputElement.lastIndex - lastIndex === token.length);
+```
