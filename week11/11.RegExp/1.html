@@ -45,14 +45,11 @@
     let text = document.createElement("span");
     text.textContent = token[0];
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 1; i <= 5; i++) {
       if (token[i]) {
         console.log(dictionary[i - 1]);
 
-        //  处理 undefined
-        if (dictionary[i - 1]) {
-          text.classList.add(dictionary[i - 1]);
-        }
+        text.classList.add(dictionary[i - 1]);
       }
     }
 
