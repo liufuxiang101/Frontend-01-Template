@@ -22,7 +22,7 @@ export class Timeline {
           timingFunction,
         } = animation;
 
-        let progression = timingFunction((t - delay - ) / duration); // 0-1 之间的数
+        let progression = timingFunction((t - delay) / duration); // 0-1 之间的数
         let value = start + progression * (end - start);
 
         object[property] = template(value);

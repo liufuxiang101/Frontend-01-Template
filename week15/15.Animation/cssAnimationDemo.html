@@ -7,6 +7,8 @@
 </style>
 
 <div id="el"></div>
+<button type="button" onclick="start()">start</button>
+<button type="button" onclick="stop()">stop</button>
 
 <script>
   let el = document.getElementById("el");
@@ -18,7 +20,8 @@
   }
 
   function stop() {
-    el.style.transition = "ease 3s";
-    el.style.transform = "translate(0, 0)";
+    el.style.transform = getComputedStyle(el).transform;
+    console.log(getComputedStyle(el).transform); // matrix
+    // el.style.transition = "none";
   }
 </script>
