@@ -112,13 +112,13 @@ function beforeAttributeName(c) {
       name: "",
       value: "",
     };
-    //console.log("currentAttribute", currentAttribute)
+    // console.log("currentAttribute", currentAttribute)
     return attributeName(c);
   }
 }
 
 function attributeName(c) {
-  //console.log(currentAttribute);
+  // console.log(currentAttribute);
   if (c.match(/^[\t\n\f ]$/) || c == "/" || c == ">" || c == EOF) {
     return afterAttributeName(c);
   } else if (c == "=") {
@@ -139,7 +139,7 @@ function beforeAttributeValue(c) {
   } else if (c == "'") {
     return singleQuotedAttributeValue;
   } else if (c == ">") {
-    //return data;
+    // return data;
   } else {
     return UnquotedAttributeValue(c);
   }
@@ -227,7 +227,7 @@ function endTagOpen(c) {
   } else {
   }
 }
-//in script
+// in script
 function scriptData(c) {
   if (c == "<") {
     return scriptDataLessThanSign;
@@ -239,7 +239,7 @@ function scriptData(c) {
     return scriptData;
   }
 }
-//in script received <
+// in script received <
 function scriptDataLessThanSign(c) {
   if (c == "/") {
     return scriptDataEndTagOpen;
@@ -255,7 +255,7 @@ function scriptDataLessThanSign(c) {
     return scriptData;
   }
 }
-//in script received </
+// in script received </
 function scriptDataEndTagOpen(c) {
   if (c == "s") {
     return scriptDataEndTagNameS;
@@ -277,7 +277,7 @@ function scriptDataEndTagOpen(c) {
     return scriptData;
   }
 }
-//in script received </s
+// in script received </s
 function scriptDataEndTagNameS(c) {
   if (c == "c") {
     return scriptDataEndTagNameC;
@@ -311,7 +311,7 @@ function scriptDataEndTagNameC(c) {
   }
 }
 
-//in script received </scr
+// in script received </scr
 function scriptDataEndTagNameR(c) {
   if (c == "i") {
     return scriptDataEndTagNameI;
@@ -327,7 +327,7 @@ function scriptDataEndTagNameR(c) {
     return scriptData;
   }
 }
-//in script received </scri
+// in script received </scri
 function scriptDataEndTagNameI(c) {
   if (c == "p") {
     return scriptDataEndTagNameP;
@@ -343,7 +343,7 @@ function scriptDataEndTagNameI(c) {
     return scriptData;
   }
 }
-//in script received </scrip
+// in script received </scrip
 function scriptDataEndTagNameP(c) {
   if (c == "t") {
     return scriptDataEndTag;
@@ -359,7 +359,7 @@ function scriptDataEndTagNameP(c) {
     return scriptData;
   }
 }
-//in script received </script
+// in script received </script
 function scriptDataEndTag(c) {
   if (c == " ") {
     return scriptDataEndTag;
