@@ -6,11 +6,11 @@ export class Timeline {
     this.tick = () => {
       let t = Date.now() - this.startTime;
 
-      for (let animation of this.animations) {
-        if (t > animation.duration + animation.delay) {
-          continue;
-        }
+      let animations = this.animations.filter(
+        (animation) => !animation.finished
+      );
 
+      for (let animation of animations) {
         let {
           object,
           property,
@@ -18,17 +18,26 @@ export class Timeline {
           start,
           end,
           duration,
-          delay,
           timingFunction,
+          delay,
+          addTime,
         } = animation;
 
-        let progression = timingFunction((t - delay) / duration); // 0-1 之间的数
-        let value = start + progression * (end - start);
+        let progression = timingFunction((t - delay - addTime) / duration); // 0-1 之间的数
+
+        if (t > duration + delay + addTime) {
+          progression = 1;
+          animation.finished = true;
+        }
+
+        let value = animation.valueFromProression(progression); // 根据 progression 算出当前值
 
         object[property] = template(value);
       }
 
-      this.requestID = requestAnimationFrame(this.tick);
+      if (animations.length) {
+        this.requestID = requestAnimationFrame(this.tick);
+      }
     };
   }
 
@@ -78,14 +87,18 @@ export class Timeline {
     this.tick();
   }
 
-  add(animation, startTime) {
+  add(animation, addTime) {
     this.animations.push(animation);
     animation.finished = false;
 
+    // addTime
+    // 1、添加到 Timeline 立即开始
+    // 2、从 Timeline 当前时间开始
     if (this.state === "playing") {
-      animation.startTime = startTime || Date.now() - this.startTime;
+      animation.addTime =
+        addTime !== void 0 ? addTime : Date.now() - this.startTime;
     } else {
-      animation.startTime = startTime || 0;
+      animation.addTime = addTime !== void 0 ? addTime : 0;
     }
   }
 }
@@ -98,8 +111,8 @@ export class Animation {
     start,
     end,
     duration,
-    delay,
-    timingFunction
+    timingFunction,
+    delay
   ) {
     this.object = object;
     this.property = property;
@@ -107,7 +120,42 @@ export class Animation {
     this.start = start;
     this.end = end;
     this.duration = duration;
-    this.delay = delay;
     this.timingFunction = timingFunction;
+    this.delay = delay;
+  }
+
+  valueFromProression(progression) {
+    return this.start + progression * (this.end - this.start);
+  }
+}
+
+export class ColorAnimation {
+  constructor(
+    object,
+    property,
+    template,
+    start,
+    end,
+    duration,
+    timingFunction,
+    delay
+  ) {
+    this.object = object;
+    this.property = property;
+    this.template = template || ((v) => `rgba(${v.r}, ${v.g}, ${v.b}, ${v.a}`);
+    this.start = start;
+    this.end = end;
+    this.duration = duration;
+    this.timingFunction = timingFunction;
+    this.delay = delay;
+  }
+
+  valueFromProression(progression) {
+    return {
+      r: this.start.r + progression * (this.end.r - this.start.r),
+      g: this.start.g + progression * (this.end.g - this.start.g),
+      b: this.start.b + progression * (this.end.b - this.start.b),
+      a: this.start.a + progression * (this.end.a - this.start.a),
+    };
   }
 }
