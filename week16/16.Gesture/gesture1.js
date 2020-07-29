@@ -1,32 +1,22 @@
-# Week16
-
-## gesture
-
-### mouseEvent/touchEvent 兼容：
-
-```js
 let element = document.body;
 
-// mouseEvent touchEvent 区分
-if (document.ontouchstart !== null) {
-  element.addEventListener("mousedown", (event) => {
-    start(event);
+element.addEventListener("mousedown", (event) => {
+  start(event);
 
-    let mousemove = (event) => {
-      move(event);
-    };
+  let mousemove = (event) => {
+    move(event);
+  };
 
-    let mouseend = (event) => {
-      end(event);
+  let mouseend = (event) => {
+    end(event);
 
-      document.removeEventListener("mousemove", mousemove);
-      document.removeEventListener("mouseup", mouseend);
-    };
+    document.removeEventListener("mousemove", mousemove);
+    document.removeEventListener("mouseup", mouseend);
+  };
 
-    document.addEventListener("mousemove", mousemove);
-    document.addEventListener("mouseup", mouseend);
-  });
-}
+  document.addEventListener("mousemove", mousemove);
+  document.addEventListener("mouseup", mouseend);
+});
 
 element.addEventListener("touchstart", (event) => {
   for (let touch of event.changedTouches) {
@@ -67,4 +57,8 @@ let end = (point) => {
 let cancel = (point) => {
   console.log("cancel");
 };
-```
+
+// tap
+// pan panstart panmove panend
+// flick
+// press pressstart pressmove pressend
