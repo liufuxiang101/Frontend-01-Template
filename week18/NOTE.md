@@ -1,1 +1,8 @@
-# 每周总结可以写在这里
+# Week18
+
+## Test
+
+- mocha
+- nyc
+- @istanbuljs/nyc-config-babel
+- babel-plugin-istanbul
