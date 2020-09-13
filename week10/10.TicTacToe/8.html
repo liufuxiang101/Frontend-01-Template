@@ -1,0 +1,288 @@
+<style>
+  .cell {
+    width: 100px;
+    height: 100px;
+    border: solid 1px white;
+
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 50px;
+    line-height: 100px;
+    text-align: center;
+    background-color: green;
+  }
+</style>
+
+<div id="board"></div>
+
+<pre>
+  • 棋盘：3x3方格
+  • 双方分别持有圆圈和叉两种棋子 ❌ ⭕️
+  • 双方交替落子
+  • 率先连成三子直线的一方获胜
+</pre>
+
+<script>
+  // 二维数据
+  let pattern = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+  ];
+
+  // 初始状态
+  let color = 1;
+
+  // 画棋盘
+  // 状态分解：0 - ''，1 - ⭕️，2 - ❌
+  function show() {
+    let board = document.getElementById("board");
+    board.innerHTML = "";
+
+    // 双数组循环
+    for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        // 创建 cell
+        let cell = document.createElement("div");
+        cell.classList.add("cell");
+
+        // 内容填充
+
+        // 如果状态为 0，填充 ''
+        // 如果状态为 1，填充 ⭕️
+        // 如果状态为 2，填充 ❌
+
+        // 使用多层三元表达式处理
+        cell.innerText =
+          pattern[x][y] === 2 ? "❌" : pattern[x][y] === 1 ? "⭕️" : "";
+
+        // cell 添加事件
+        cell.addEventListener("click", () => move(x, y));
+
+        // 插入到 board
+        board.appendChild(cell);
+      }
+
+      // 每 3 个后换行
+      board.appendChild(document.createElement("br"));
+    }
+  }
+
+  // 用户落子
+  function move(x, y) {
+    if (pattern[x][y] !== 0) {
+      return;
+    }
+
+    // 默认状态 1，交替落子，状态交换
+    pattern[x][y] = color;
+
+    // 判断胜负
+    if (check(pattern, color)) {
+      console.log(color === 2 ? "❌ is winner!" : "⭕️ is winner!");
+    }
+
+    color = 3 - color;
+    show();
+
+    computerMove();
+  }
+
+  // 电脑落子
+  function computerMove() {
+    let choice = bestChoice(pattern, color);
+
+    if (choice.point) {
+      pattern[choice.point[0]][choice.point[1]] = color;
+    }
+
+    // 判断胜负
+    if (check(pattern, color)) {
+      console.log(color === 2 ? "❌ is winner!" : "⭕️ is winner!");
+    }
+
+    color = 3 - color;
+    show();
+  }
+
+  // 判断胜负
+  // 8 个方向
+  function check(pattern, color, x, y) {
+    // && 初始化值 true
+    // || 初始化值 false
+    // + 初始化值 0
+    // * 初始化值 1
+
+    // 横向
+    for (let y = 0; y < 3; y++) {
+      let win = true;
+
+      for (let x = 0; x < 3; x++) {
+        if (pattern[x][y] !== color) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win) {
+        return true;
+      }
+    }
+
+    // 纵向
+    for (let y = 0; y < 3; y++) {
+      let win = true;
+
+      for (let x = 0; x < 3; x++) {
+        if (pattern[y][x] !== color) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win) {
+        return true;
+      }
+    }
+
+    // 交叉
+    {
+      let win = true;
+
+      for (let x = 0; x < 3; x++) {
+        if (pattern[x][x] !== color) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win) {
+        return true;
+      }
+    }
+
+    {
+      let win = true;
+
+      for (let x = 0; x < 3; x++) {
+        if (pattern[x][2 - x] !== color) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  // clone
+  function clone(pattern) {
+    return JSON.parse(JSON.stringify(pattern));
+  }
+
+  // 预测胜利
+  function willwin(pattern, color) {
+    for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        if (pattern[x][y] !== 0) {
+          continue;
+        }
+
+        // 1、复制临时 pattern
+        let tmp = clone(pattern);
+        tmp[x][y] = color;
+
+        // 2、检查临时 pattern，当前 color 是否 win
+        if (check(tmp, color)) {
+          return [x, y];
+        }
+      }
+    }
+
+    return null;
+  }
+
+  // 棋谱
+  let openings = new Map();
+  openings.set(
+    [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+    ].toString() + "1",
+    {
+      point: [1, 1],
+      result: 0,
+    }
+  );
+  openings.set(
+    [
+      [0, 0, 0],
+      [0, 1, 0],
+      [0, 0, 0],
+    ].toString() + "2",
+    {
+      point: [0, 0],
+      result: 0,
+    }
+  );
+
+  // 最佳策略
+  // 0: 平
+  // 1: 胜
+  // -1: 负
+  function bestChoice(pattern, color) {
+    // 优先匹配棋谱
+    if (openings.has(pattern.toString() + color)) {
+      return openings.get(pattern.toString() + color);
+    }
+
+    // 1、赢到情况
+    let point = willwin(pattern, color);
+    if (point) {
+      return {
+        point: point,
+        result: 1,
+      };
+    }
+
+    // 2、输的情况
+    let result = -1;
+    outer: for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        if (pattern[x][y] !== 0) {
+          continue;
+        }
+
+        // 2.1、复制临时 pattern
+        let tmp = clone(pattern);
+        tmp[x][y] = color;
+
+        // 2.2、对方的 bestChoice 取反，就是已方的 bestChoice
+        let opposite = bestChoice(tmp, 3 - color);
+        if (-opposite.result >= result) {
+          point = [x, y];
+          result = -opposite.result;
+        }
+
+        // 2.3、如果赢了停止循环
+        // 剪枝算法
+        if (result === 1) {
+          break outer;
+        }
+      }
+    }
+
+    // 3、平的情况
+    return {
+      point: point,
+      result: point ? result : 0,
+    };
+  }
+
+  show(pattern);
+</script>
